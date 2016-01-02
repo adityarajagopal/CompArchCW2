@@ -1,0 +1,199 @@
+1) DIRECT MAPPED
+INPUT
+# 8 bit addresses
+# 2 Bytes/word, 2 words/block, 1 block/set, 2 sets/cache
+# 1 cycle/hit, 2 cycles/read, 2 cycles/write
+write-req 0 FF11
+read-req 0
+write-req 4 2211
+write-req 6 4422
+read-req 4
+read-req 6
+read-req 0
+write-req 16 1234
+read-req 0
+read-req 16
+
+PARAMS
+8 2 2 1 2 1 2 2 
+
+OUTPUT
+write-ack 0 miss 3
+read-ack 0 hit 1 FF11
+write-ack 1 miss 3
+write-ack 1 hit 1
+read-ack 1 hit 1 2211
+read-ack 1 hit 1 4422
+read-ack 0 hit 1 FF11
+write-ack 0 miss 5
+read-ack 0 miss 5 FF11
+read-ack 0 miss 3 1234
+//***********************************************************//
+2) DIRECT MAPPED
+INPUT 
+# 8 bit address 
+# 2 bytes/word, 4 words/block, 1 block/set, 4 sets/cache
+# 1 cycle/hit, 2 cycles/read, 2 cycles/write
+flush-req 
+write-req 32 1123
+write-req 0 FF34
+write-req 18 3452
+read-req 36 
+read-req 16 
+write-req 22 4523
+read-req 18
+flush-req 
+write-req 24 3342
+read-req 6 
+
+PARAMS
+8 2 4 1 4 1 2 2
+
+OUTPUT 
+flush-ack 0
+write-ack 0 miss 3
+write-ack 0 miss 5
+write-ack 2 miss 3 
+read-ack 0 miss 5 0000
+read-ack 2 hit 1 0000 
+write-ack 2 hit 1
+read-ack 2 hit 1 3452
+flush-ack 2
+write-ack 3 miss 3 
+read-ack 0 miss 3 0000
+//***********************************************************//
+3) 2-WAY SET ASSOCIATIVE
+INPUT 
+# 8 bit addresses 
+# 2 bytes/word, 4 words/block, 2 blocks/set, 2 sets/cache
+# 1 cycle/hit, 2 cycles/read, 2 cycles/write 
+write-req 0 FF43	
+write-req 4 F123
+write-req 10 1234
+read-req 0
+read-req 10
+write-req 2 2315
+read-req 16 
+write-req 18 4413
+read-req 12 
+flush-req
+
+PARAMS
+8 2 4 2 2 1 2 2
+
+OUTPUT 
+write-ack 0 miss 3 
+write-ack 0 hit 1 
+write-ack 1 miss 3 
+read-ack 0 hit 1 FF43
+read-ack 1 hit 1 1234
+write-ack 0 hit 1
+read-ack 0 miss 3 0000
+write-ack 0 hit 1 
+read-ack 1 hit 1 0000 
+flush-ack 6
+//***********************************************************//
+4) 2-WAY SET ASSOCIATIVE 
+INPUT 
+# 8 bit address 
+# 2 bytes/word, 2 words/block, 2 blocks/set, 4 sets/cache 
+# 1 cycle/hit, 2 cycles/read, 2 cycles/write 
+write-req 0 1234
+write-req 4 3323
+write-req 8 1456
+write-req 12 1102
+read-req 10
+read-req 4
+read-req 2
+read-req 20
+write-req 22 1143
+write-req 6 F321
+read-req 12 
+
+PARAMS
+8 2 2 2 4 1 2 2
+
+OUTPUT 
+write-ack 0 miss 3
+write-ack 1 miss 3 
+write-ack 2 miss 3
+write-ack 3 miss 3
+read-ack 2 hit 1 0000
+read-ack 1 hit 1 3323
+read-ack 0 hit 1 0000
+read-ack 1 miss 3 0000
+write-ack 1 hit 1 
+write-ack 1 hit 1 
+read-ack 3 hit 1 1102
+//***********************************************************//
+5) 4-WAY SET ASSOCIATIVE
+INPUT
+# 8 bit address 
+# 2 bytes/word, 1 word/block, 4 blocks/set, 2 sets/cache
+# 1 cycle/hit, 2 cycles/read, 3 cycles/write
+write-req 0 FF32
+write-req 2 14A2
+write-req 6 2314
+read-req 14
+write-req 4 2241
+read-req 10
+write-req 18 A123 
+read-req 16 
+write-req 20 B34E
+read-req 8 
+write-req 12 FFFF
+flush-req
+write-req 2 A0F2
+
+PARAMS
+8 2 1 4 2 1 2 3
+
+OUPTUT 
+write-ack 0 miss 1
+write-ack 1 miss 1
+write-ack 1 miss 1
+read-ack 1 miss 3 0000
+write-ack 0 miss 1
+read-ack 1 miss 3 0000
+write-ack 1 miss 4 
+read-ack 0 miss 3 0000
+write-ack 0 miss 1
+read-ack 0 miss 6 0000
+write-ack 0 miss 4 
+flush-ack 12
+write-ack 1 miss 1
+//***********************************************************//
+6) FULLY ASSOCIATIVE
+INPUT
+# 8 bit address
+# 4 bytes/word, 2 words/block, 4 blocks/set, 1 set/cache
+# 1 cycle/hit, 2 cycles/read, 4 cycles/write
+write-req 0 1234AA3F
+write-req 12 AF321152
+write-req 16 11534242
+read-req 12
+read-req 4
+write-req 36 F2421ADD
+write-req 40 AFF33322
+read-req 28 
+read-req 0 
+read-req 40
+read-req 36
+write-req 20 AFF32231
+
+PARAMS
+8 4 2 4 1 1 2 4
+
+OUTPUT
+write-ack 0 miss 3
+write-ack 0 miss 3
+write-ack 0 miss 3 
+read-ack 0 hit 1 AF321152
+read-ack 0 hit 1 00000000
+write-ack 0 miss 3
+write-ack 0 miss 7
+read-ack 0 miss 7 00000000 
+read-ack 0 hit 1 1234AA3F
+read-ack 0 hit 1 AFF33322
+read-ack 0 hit 1 F2421ADD
+write-ack 0 miss 3
