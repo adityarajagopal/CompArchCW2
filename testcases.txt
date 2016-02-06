@@ -148,7 +148,7 @@ write-req 2 A0F2
 PARAMS
 8 2 1 4 2 1 2 3
 
-OUPTUT 
+OUTPUT 
 write-ack 0 miss 1
 write-ack 1 miss 1
 write-ack 1 miss 1
@@ -197,3 +197,41 @@ read-ack 0 hit 1 1234AA3F
 read-ack 0 hit 1 AFF33322
 read-ack 0 hit 1 F2421ADD
 write-ack 0 miss 3
+//***********************************************************//
+7) FULLY ASSOCIATIVE 
+INPUT
+# 8 bit address
+# 2 bytes/word, 2 words/block, 2 blocks/set, 1 set/cache
+# 1 cycle/hit, 2 cycles/read, 4 cycles/write
+write-req 0 1234
+write-req 4 5244
+write-req 3 2214
+read-req 24 
+read-req 4 
+write-req 26 A423
+write-req 16 AF13
+read-req 26
+read-req 0
+write-req 24 1145 
+read-req 4 
+flush-req 
+read-req 20
+
+PARAMS
+8 2 2 2 1 1 2 4
+
+OUTPUT 
+write-ack 0 miss 3 
+write-ack 0 miss 3 
+write-ack 0 hit 1 
+read-ack 0 miss 7 0000
+read-ack 0 miss 7 5244
+write-ack 0 hit 1
+write-ack 0 miss 3
+read-ack 0 hit 1 A423
+read-ack 0 miss 7 1234
+write-ack 0 hit 1
+read-ack 0 miss 3 5244
+flush-ack 4
+read-ack 0 miss 3 0000
+//***********************************************************//

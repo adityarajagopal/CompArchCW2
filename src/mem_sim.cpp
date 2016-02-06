@@ -73,17 +73,14 @@ int main(int argc, char *argv[])
 		{
 			unsigned timeTaken = 0;
 			c1.flush(timeTaken); 
-			std::cout << "flush-ack " << int(timeTaken) << std::endl;
+			std::cout << "flush-ack " << std::dec << int(timeTaken) << std::endl;
 		}
 		//if debug request 
 		else if(command == "debug-req")
 		{
 			int mode;
-			std::cin >> mode;
 			std::cout << "debug-ack-begin" << std::endl;
 			std::cout << c1;
-			if(mode)
-				std::cout << r1;
 			std::cout << "debug-ack-end" << std::endl;
 		}
 		//if comments 
